@@ -27,3 +27,52 @@ blockchain = [
 # Anthony's KelloggCoin balance is 2650
 
 # 👇👇👇 Your code HERE 👇👇👇
+index=0
+totals=[]
+loop do
+  if index==blockchain.size
+    break
+  end
+  index2=0
+  found=false
+  index3=0
+  found2=false
+  loop do #add funds to user 
+    if index3==totals.size 
+      break
+    end
+    if totals[index3]["User"]==blockchain[index]["to_user"]
+      totals[index3]["Total"]=totals[index3]["Total"]+blockchain[index]["amount"]
+      found2=true
+      break 
+    end
+    index3=index3+1
+  end
+  if !found2
+    totals<<{"User"=>"#{blockchain[index]["to_user"]}","Total"=>blockchain[index]["amount"]}
+  end
+  loop do #Remove funds from user
+    if index2==totals.size 
+      break
+    end
+    if totals[index2]["User"]==blockchain[index]["from_user"]
+      totals[index2]["Total"]=totals[index2]["Total"]-blockchain[index]["amount"]
+      found=true
+      break 
+    end
+    index2=index2+1
+  end
+  if !found
+    puts "#{blockchain[index]["from_user"]} Cannot remove funds, No Balance" #should break out of entire line here, but this won't happen in our blockchain example. will only hit with nil user  
+  end
+  index=index+1
+end
+index4=0
+loop do #print totals 
+  if index4==totals.size 
+    break
+  end
+  puts "#{totals[index4]["User"].capitalize}'s KelloggCoin Balance is #{totals[index4]["Total"]}"
+  index4=index4+1
+end
+
